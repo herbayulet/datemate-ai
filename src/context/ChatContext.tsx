@@ -1,22 +1,22 @@
-import {createContext, useContext, useReducer} from "react"
-import type {ChatState, DatePlan, Message} from "../types"
+import {createContext, useContext, useReducer, type ReactNode} from "react"
+import type { ChatState, DatePlan, Message } from "../types";
 
-/* initial state */
+// Initial state
 const initialState: ChatState = {
     messages: [],
     isLoading: false,
     currentPlan: null,
 }
 
-/* action types */
+// Action types — HARUS ADA 4 INI
 type ChatAction =
     | {type: "SEND_MESSAGE"; payload: Message}
     | {type: "RECEIVE_MESSAGE"; payload: Message}
     | {type: "SET_LOADING"; payload: boolean}
     | {type: "SET_PLAN"; payload: DatePlan}
 
-/* reducer */
-const chatReducer = (state: ChatState, action: ChatAction): ChatState => {
+// Reducer — HARUS HANDLE 4 CASE
+function chatReducer(state: ChatState, action: ChatAction): ChatState {
     switch (action.type) {
         case "SEND_MESSAGE":
             return {
@@ -44,26 +44,28 @@ const chatReducer = (state: ChatState, action: ChatAction): ChatState => {
     }
 }
 
-/* context type */
+// Context type
 interface ChatContextType {
     state: ChatState
     dispatch: React.Dispatch<ChatAction>
 }
 
-/* context */
+// Create Context
 const ChatContext = createContext<ChatContextType | null>(null)
 
-/* provider component */
-export const ChatProvider = ({children}: {children: React.ReactNode}) => {
+// Provider
+export function ChatProvider({children}: {children: ReactNode}) {
     const [state, dispatch] = useReducer(chatReducer, initialState)
 
     return <ChatContext.Provider value={{state, dispatch}}>{children}</ChatContext.Provider>
 }
 
-/* hook */
+// Hook
 // eslint-disable-next-line react-refresh/only-export-components
-export const useChat = () => {
+export function useChat() {
     const context = useContext(ChatContext)
-    if (!context) throw new Error("useChat must be used inside ChatProvider")
+    if (!context) {
+        throw new Error("useChat must be used inside ChatProvider")
+    }
     return context
 }
