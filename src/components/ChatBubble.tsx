@@ -10,9 +10,12 @@ const ChatBubble = ({message}: ChatBubbleProps) => {
     return (
         <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-4`}>
             <div
-                className={`max-w-[70%] rounded-2xl px-4 py-2${isUser ? "bg-primary text-white rounded-br-none" : "bg-white text-gray-800 rounded-bl-none shadow-md"}`}>
-                <p className="text-sm">{message.content}</p>
-                <span className="text-xs opacity-70 mt-1 block">
+                className={`
+        max-w-[70%] rounded-2xl px-4 py-3
+        ${isUser ? "bg-rose-500 text-white rounded-br-none" : "bg-white text-gray-800 rounded-bl-none shadow-md border"}
+      `}>
+                <p className="text-sm leading-relaxed">{message.content}</p>
+                <span className={`text-xs mt-1 block ${isUser ? "text-rose-100" : "text-gray-400"}`}>
                     {message.timeStamp.toLocaleTimeString("id-ID", {
                         hour: "2-digit",
                         minute: "2-digit",
